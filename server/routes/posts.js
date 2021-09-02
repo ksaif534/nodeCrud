@@ -1,13 +1,11 @@
 import { getPosts, createPost } from '../controllers/posts.js';
 import express from 'express';
+// import Router from 'express-promise-router';
 
+// const router = new Router();
 const router = express.Router();
 
-try{
-    router.get('/', getPosts);
-    router.post('/', createPost);
-}catch (e) {
-    console.log(e);
-}
+router.get('/', getPosts);
+router.post('/', createPost);
 
 export default router;
