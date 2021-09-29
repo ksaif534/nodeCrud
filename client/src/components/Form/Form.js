@@ -39,7 +39,7 @@ const Form = ({currentId, setCurrentId}) => {
             message: '',
             tags: '',
             selectedFile: ''
-         });
+        });
     }
     return (
         <Paper className={classes.paper}>
