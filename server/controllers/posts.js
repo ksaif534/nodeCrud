@@ -11,13 +11,15 @@ export const getPosts =  async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
+    const post = req.body;
+    const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString()})
     try {
-        const post = req.body;
-        const newPost = new PostMessage(post);
-        await newPost.save();
+        // const post = req.body;
+        // const newPost = new PostMessage(post);
+        await newPostMessage.save();
         res.status(200).json(newPost);
     } catch (error) {
-        res.status(400).json();
+        res.status(405).json();
     }
 }
 
@@ -72,7 +74,7 @@ export const likePost = async (req, res) => {
                     return id !== String(req.userId);
                 });
             }
-            const updatedPost = await PostMessage.findByIdAndUpdate(_id,{ likeCount: post.likeCount + 1 },{ new: true }); 
+            const updatedPost = await PostMessage.findByIdAndUpdate(_id,{ ...post, likeCount: post.likeCount + 1 },{ new: true }); 
             res.json(updatedPost);   
         }
     } catch (error) {

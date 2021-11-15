@@ -15,7 +15,6 @@ const reducerPost = (posts = [], action) => {
                     return post;
                 }
             });
-            break;
         case DELETE :
             return posts.filter((post) => post._id !== action.paylaod);
         default:
