@@ -1,10 +1,10 @@
 import { Container, Grow, Grid, AppBar, Paper, TextField, Button  } from "@material-ui/core";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Posts from '../Posts/Posts';
-import { getPosts } from '../../actions/posts';
+import { getPosts, getPostsBySearch } from '../../actions/posts';
 import Form from '../Form/Form';
 import { useDispatch } from 'react-redux';
-import { useHistory,useLocation } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import ChipInput from 'material-ui-chip-input';
 import Pagination from '../Pagination';
 import useStyles from './styles';
@@ -17,20 +17,30 @@ const Home = () => {
     const [currentId, setCurrentId] = useState(null);
     const dispatch = useDispatch();
     const query = useQuery();
-    const history = useHistory();
+    const history = useNavigate();
     const page = query.get('page') || 1;
     const searchQuery = query.get('searchQuery');
     const classes = useStyles();
     const [search, setSearch] = useState('');
     const [tags, setTags] = useState([]);
 
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [currentId,dispatch]);
-
     const handleKeyPress = (e) => {
-        if (e.keyCode === 13) {
-            //Search for the Post
+        //
+    }
+
+    const handleAdd = (tag) => {
+        return setTags([...tags, tag]);
+    }
+
+    const handleDelete = (tag) => {
+        return setTags(tags.filter(t => t !== tag));
+    }
+
+    const searchPost = () => {
+        if (search.trim() || tags) {
+            dispatch(getPostsBySearch({ search, tags: tags.join(',') }));    
+        }else{
+            history('/');
         }
     }
 
@@ -54,13 +64,18 @@ const Home = () => {
                         <ChipInput 
                             style={{margin: '10px 0'}}
                             value={tags}
+                            onAdd={handleAdd}
+                            onDelete={handleDelete}
                         />
+                        <Button type="submit" variant="contained" color="primary" onClick={searchPost}>Search</Button>
                     </AppBar>
                     <Grid item xs={12} sm={6} md={3}>
                         <Form currentId={currentId} setCurrentId={setCurrentId} />
-                        <Paper elevation={6}>
-                            <Pagination />
-                        </Paper>
+                        {(!searchQuery && !tags.length) && (
+                            <Paper elevation={6} className={classes.pagination}>
+                                <Pagination page={page} />
+                            </Paper>
+                        )}
                     </Grid>
                 </Grid>
             </Container>

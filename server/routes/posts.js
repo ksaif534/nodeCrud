@@ -1,13 +1,13 @@
-import { getPosts, createPost, updatePost, deletePost,likePost } from '../controllers/posts.js';
+import { getPosts, getPost, getPostsBySearch, createPost, updatePost, deletePost,likePost } from '../controllers/posts.js';
 import express from 'express';
-// import Router from 'express-promise-router';
 
 import auth from '../middleware/auth.js';
 
-// const router = new Router();
 const router = express.Router();
 
 router.get('/', getPosts);
+router.get('/search',getPostsBySearch);
+router.get('/:id',getPost);
 router.post('/', auth , createPost);
 router.patch('/:id', auth , updatePost);
 router.delete('/:id/deletePost', auth , deletePost);
