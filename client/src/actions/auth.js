@@ -6,7 +6,7 @@ export const signin = (formData, history) => async(dispatch) => {
         // Log in the User ..
         const { data } = await api.signIn(formData);
         dispatch({type:AUTH, data});
-        history('/');
+        history('/posts');
     } catch (error) {
         console.log(error);
     }
@@ -17,7 +17,7 @@ export const signup = (formData, history) => async(dispatch) => {
         // Sign up the User ..
         const { data } = await api.signUp(formData);
         dispatch({type:AUTH, data});
-        history('/');
+        history('/auth');
     } catch (error) {
         console.log(error);
     }

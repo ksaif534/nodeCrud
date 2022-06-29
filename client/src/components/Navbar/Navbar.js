@@ -4,9 +4,9 @@ import { Typography,AppBar,Toolbar,Button,Avatar } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 import useStyles from './styles';
-import memories from '../../images/img1.png';
 import memoriesLogo from '../../images/memories-Logo.png';
 import memoriesText from '../../images/memories-Text.png';
+import { LOGOUT } from '../../constants/actionTypes';
 
 const Navbar = () => {
     const classes = useStyles();
@@ -21,26 +21,24 @@ const Navbar = () => {
         if (token) {
             const decodedToken = decode(token);
             if (decodedToken.exp * 1000 < new Date().getTime()) {
-                logout();
+                logOut();
             }
-        } else {
-            
         }
         //JWT
         setUser(JSON.parse(localStorage.getItem('profile')));
     }, [location]);
 
-    const logout = () => {
-        dispatch({type: 'LOGOUT'});
-        history('/');
+    const logOut = () => {
+        dispatch({type: LOGOUT});
+        history('/auth');
         setUser(null);
     };
 
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
             <div className={classes.brandContainer}>
-                <img className={classes.image} src={memoriesLogo} alt="memories" height="60"/>
-                <img className={classes.image} src={memoriesText} alt="memories" height="60"/>
+                <img className={classes.image} src={memoriesLogo} alt="memories" height="40"/>
+                <img className={classes.image} src={memoriesText} alt="memories" height="40"/>
             </div>
             <Toolbar className={classes.toolbar}>
                 {user ? (
@@ -51,7 +49,7 @@ const Navbar = () => {
                             <Typography className={classes.userName} variant="h6">
                                 {user.result.name}
                             </Typography>
-                            <Button className={classes.logout} variant="contained" color="secondary" onClick={logout}>Logout</Button>
+                            <Button className={classes.logout} variant="contained" color="secondary" onClick={logOut}>Logout</Button>
                         </div>
                     ): (
                         <Button component={Link} to="/auth" variant="contained" color="primary">Sign in</Button>

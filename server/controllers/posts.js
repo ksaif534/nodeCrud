@@ -100,10 +100,23 @@ export const likePost = async (req, res) => {
                     return id !== String(req.userId);
                 });
             }
-            const updatedPost = await PostMessage.findByIdAndUpdate(_id,{ ...post, likeCount: post.likeCount + 1 },{ new: true }); 
+            const updatedPost = await PostMessage.findByIdAndUpdate(_id,{ ...post, likeCount: post.likeCount + 1 },{ new: true });
             res.json(updatedPost);   
         }
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const commentPost = async (req, res) => {
+    try {
+        const { id: _id } = req.params;
+        const { value } = req.body;
+        const post = await PostMessage.findById(_id);
+        post.comments.push(value);
+        const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true });
+        return res.json(updatedPost); 
+    } catch (error) {
+        
     }
 }

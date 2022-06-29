@@ -1,7 +1,7 @@
 import { Container, Grow, Grid, AppBar, Paper, TextField, Button  } from "@material-ui/core";
 import React, { useState } from 'react';
 import Posts from '../Posts/Posts';
-import { getPosts, getPostsBySearch } from '../../actions/posts';
+import { getPostsBySearch } from '../../actions/posts';
 import Form from '../Form/Form';
 import { useDispatch } from 'react-redux';
 import { useNavigate,useLocation } from "react-router-dom";
@@ -48,9 +48,11 @@ const Home = () => {
         <Grow in>
             <Container maxWidth="xl">
                 <Grid container justifyContent="space-between" alignItems="stretch" spacing={3} className={classes.gridContainer}>
-                    <Grid item xs={12} sm={6} md={9}>
+                    <Grid item xs={12} sm={12} md={1} lg={1}></Grid>
+                    <Grid item xs={12} sm={12} md={10} lg={10}>
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
+                    <Grid item xs={12} sm={12} md={1} lg={1}></Grid>
                     <AppBar className={classes.appBarSearch} position="static" color="inherit">
                         <TextField 
                         name="search" 
@@ -69,7 +71,8 @@ const Home = () => {
                         />
                         <Button type="submit" variant="contained" color="primary" onClick={searchPost}>Search</Button>
                     </AppBar>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
+                    <Grid item xs={12} sm={12} md={8} lg={8}>
                         <Form currentId={currentId} setCurrentId={setCurrentId} />
                         {(!searchQuery && !tags.length) && (
                             <Paper elevation={6} className={classes.pagination}>
@@ -77,6 +80,7 @@ const Home = () => {
                             </Paper>
                         )}
                     </Grid>
+                    <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
                 </Grid>
             </Container>
         </Grow>

@@ -6,20 +6,22 @@ export default makeStyles((theme) => ({
     objectFit: 'cover',
     width: '100%',
     maxHeight: '600px',
-
+    maxWidth: '500px'
   },
   card: {
     display: 'flex',
     width: '100%',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('sm xs')]: {
       flexWrap: 'wrap',
       flexDirection: 'column',
     },
+    justifyContent: 'center',
   },
   section: {
     borderRadius: '20px',
     margin: '10px',
     flex: 1,
+    justifyContent: 'center',
   },
   imageSection: {
     marginLeft: '20px',
@@ -36,4 +38,13 @@ export default makeStyles((theme) => ({
   loadingPaper: {
     display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '15px', height: '39vh',
   },
+  commentsOuterContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  commentsInnerContainer: {
+    height: '200px',
+    overflowY: 'auto',
+    marginRight: '30px',
+  }
 }));
