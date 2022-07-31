@@ -112,11 +112,49 @@ export const commentPost = async (req, res) => {
     try {
         const { id: _id } = req.params;
         const { value } = req.body;
+        console.log(value);
         const post = await PostMessage.findById(_id);
         post.comments.push(value);
         const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true });
         return res.json(updatedPost); 
     } catch (error) {
         
+    }
+}
+
+export const updateComment = async (req, res) => {
+    try {
+        const { id:_id } = req.params;
+        const { comment } = req.body;
+        const post  = await PostMessage.findById(_id);
+        post.comments.map((comm) => {
+            if (comm.id === comment.id) {
+                comm.comment = comment.comment;
+            }
+        });
+        const updatedPostWithComment = await PostMessage.findByIdAndUpdate(_id, post, { new:true });
+        return res.json(updatedPostWithComment);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteComment = async (req, res) => {
+    try {
+        const { id:_id } = req.params;
+        const { comment } = req.body;
+        var tempIndex;
+        const post = await PostMessage.findById(_id);
+        post.comments.map((comm,commIndex) => {
+            if(comm.id === comment.id){
+                tempIndex = commIndex;
+            }
+        });
+        console.log(tempIndex);
+        post.comments.splice(tempIndex, 1);
+        const updatedPostWithDeletedComment = await PostMessage.findByIdAndUpdate(_id,post,{ new:true });    
+        return res.json(updatedPostWithDeletedComment);
+    } catch (error) {
+        console.log(error);
     }
 }

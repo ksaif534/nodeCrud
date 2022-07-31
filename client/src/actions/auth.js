@@ -7,6 +7,7 @@ export const signin = (formData, history) => async(dispatch) => {
         const { data } = await api.signIn(formData);
         dispatch({type:AUTH, data});
         history('/posts');
+        window.location.reload();
     } catch (error) {
         console.log(error);
     }

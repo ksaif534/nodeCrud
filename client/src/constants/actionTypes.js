@@ -8,5 +8,7 @@ export const END_LOADING = 'END_LOADING';
 export const DELETE = 'DELETE';
 export const LIKE = 'LIKE';
 export const COMMENT = 'COMMENT';
+export const UPDATE_COMMENT = 'UPDATE_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';

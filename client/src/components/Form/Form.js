@@ -33,14 +33,27 @@ const Form = ({currentId, setCurrentId}) => {
         }
         clear();
     }
-    if (!user?.result?.name) {
-        return (
-            <Paper className={classes.paper}>
-                <Typography variant="h6" align="center">
-                    Please Sign in to Create your own memories and like other's memories
-                </Typography>
-            </Paper>
-        )
+    if (user?.googleToken) {
+        if (!user?.googleToken?.name) {
+            return (
+                <Paper className={classes.paper}>
+                    <Typography variant="h6" align="center">
+                        Please Sign in to Create your own memories and like other's memories
+                    </Typography>
+                </Paper>
+            )
+        }    
+    }
+    if (user?.result) {
+        if (!user?.result?.name) {
+            return (
+                <Paper className={classes.paper}>
+                    <Typography variant="h6" align="center">
+                        Please Sign in to Create your own memories and like other's memories
+                    </Typography>
+                </Paper>
+            )
+        }
     }
     const clear = () => {
         setCurrentId(null);
@@ -54,7 +67,7 @@ const Form = ({currentId, setCurrentId}) => {
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">{ currentId ? 'Editing' : 'Creating' } a Memory</Typography>
+                <Typography variant="h6">{ currentId ? 'Editing' : 'Creating' } a Post</Typography>
                 <TextField
                     name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({
                     ...postData,

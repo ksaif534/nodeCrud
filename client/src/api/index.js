@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const API = axios.create({ baseURL: 'http://localhost:5000'});
+const encodedTokenForGoogleOrCustomToken = localStorage.getItem('encodedProfile') || JSON.parse(localStorage.getItem('profile'))?.token;
 API.interceptors.request.use((req) => {
-    if (localStorage.getItem('profile')) {
-        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+    if (localStorage.getItem('profile') || localStorage.getItem('encodedProfile')) {
+        req.headers.Authorization = `Bearer ${encodedTokenForGoogleOrCustomToken}`;
     }
     return req;
 });
@@ -16,6 +17,8 @@ export const updatePost = (id,updatedPost) => API.patch(`/posts/${id}`, updatedP
 export const deletePost = (id) => API.delete(`/posts/${id}/deletePost`);
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 export const comment = (value,id) => API.post(`posts/${id}/commentPost`, { value });
+export const updateComment = (comment,id) => API.patch(`/posts/${id}/updateComment`, { comment });
+export const deleteComment = (comment,id) => API.patch(`/posts/${id}/deleteComment`,{ comment });
 
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);

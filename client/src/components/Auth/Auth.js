@@ -9,6 +9,8 @@ import LockOutlinedIcon  from '@material-ui/icons/LockOutlined';
 import Input from './Input';
 import useStyles from './styles';
 import { signin, signup } from '../../actions/auth';
+import { AUTH } from '../../constants/actionTypes';
+import jwt_decode from 'jwt-decode'; 
 
 const initState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
 
@@ -37,11 +39,12 @@ const Auth = () => {
     }
 
     const googleSuccess = async (res) => {
-        const result = res?.profileObj;
-        const token = res?.tokenId;
+        const googleToken = jwt_decode(res.credential);
+        localStorage.setItem('encodedProfile', res.credential);
         try {
-            dispatch({type: 'AUTH', data: {result, token} });
-            history.push('/');
+            dispatch({type: AUTH, data: {googleToken} });
+            history('/auth');
+            window.location.reload();
         } catch (error) {
             console.error(error);
         }
@@ -76,9 +79,8 @@ const Auth = () => {
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         { isSignUp ? 'Sign Up' : 'Sign In'}
                     </Button>
-                    <GoogleOAuthProvider>
+                    <GoogleOAuthProvider clientId="971085252524-mgcsnijlq5nivamlpb3f8flpdhcia7t4.apps.googleusercontent.com">
                         <GoogleLogin 
-                            clientId="971085252524-glulrofnfa0j4hcum830k8dl9ousft0c.apps.googleusercontent.com"
                             render={(renderProps) =>(
                                 <Button 
                                     className={classes.googleButton}

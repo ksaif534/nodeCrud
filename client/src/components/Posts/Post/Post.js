@@ -17,7 +17,7 @@ const Post = ({post , setCurrentId}) => {
     const history = useNavigate();
     const [likes,setLikes] = useState(post?.likes);
     const user = JSON.parse(localStorage.getItem('profile'));
-    const userId = user?.result?.googleId || user?.result?._id;
+    const userId = user?.result?.googleId || user?.result?._id || user?.googleToken?.sub;
     const hasLikedPost = post?.likes.find((like) => like === (userId));
 
     const openPost = () => {
@@ -80,9 +80,15 @@ const Post = ({post , setCurrentId}) => {
                 </CardContent>
             </CardActionArea>
             <CardActions className={classes.cardActions}>
-                <Button size="small" color="primary" disabled={!user?.result} onClick={handleLike}>
-                    <Likes />
-                </Button>
+                { (user?.result) ? (
+                    <Button size="small" color="primary" disabled={(!user?.result)} onClick={handleLike}>
+                        <Likes />
+                    </Button>
+                ) : (
+                    <Button size="small" color="primary" disabled={(!user?.googleToken)} onClick={handleLike}>
+                        <Likes />
+                    </Button>
+                ) }
                 { (userId === post?.creator) && (
                     <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
                         <DeleteIcon fontSize="small" />

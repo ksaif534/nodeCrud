@@ -10,7 +10,7 @@ import useStyles from './styles';
 const PostDetails = () => {
     const { post, posts, isLoading } = useSelector((state) => state.posts);
     const dispatch = useDispatch();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const classes = useStyles();
     const { id } = useParams();
 
@@ -40,7 +40,7 @@ const PostDetails = () => {
     const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
     const openPost = (_id) => {
-        return history(`/posts/${_id}`);
+        return navigate(`/posts/${_id}`);
     }
 
     return (
@@ -73,9 +73,13 @@ const PostDetails = () => {
                         { recommendedPosts.map(({ title, message, name, likes, selectedFile, _id }) => (
                             <div key={_id} style={{ margin: '20px' }} cursor="pointer" onClick={()=> openPost(_id)}>
                                 <Typography gutterBottom variant="h6">{ title }</Typography>
+                                <Divider style={{margin: '5px'}} />
                                 <Typography gutterBottom variant="subtitle2">{ name }</Typography>
+                                <Divider style={{margin: '5px'}} />
                                 <Typography gutterBottom variant="subtitle2">{ message }</Typography>
+                                <Divider style={{margin: '5px'}} />
                                 <Typography gutterBottom variant="subtitle2">{ likes.length }</Typography>
+                                <Divider style={{margin: '5px'}} />
                                 <img src={selectedFile} width="200px" />
                             </div>
                         ) ) }

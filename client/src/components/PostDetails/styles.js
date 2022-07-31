@@ -41,10 +41,25 @@ export default makeStyles((theme) => ({
   commentsOuterContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+    width: '100%',
   },
   commentsInnerContainer: {
     height: '200px',
     overflowY: 'auto',
     marginRight: '30px',
+    width: '50%',
+    backgroundColor: '#fafafa',
+  },
+  cardComment: {
+    height: 'auto',
+    paddingLeft: '10px',
+    borderRadius: '30px',
+  },
+  iconHover: {
+    '&:hover': {
+      background: "rgb(7, 177, 77, 0.42)",
+      'border-radius': '10px',
+      '-webkit-transition': 'all 500ms ease'
+    }
   }
 }));

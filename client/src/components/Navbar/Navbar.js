@@ -1,23 +1,22 @@
 import React, { useState, useEffect} from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Typography,AppBar,Toolbar,Button,Avatar } from '@material-ui/core';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Typography,AppBar,Toolbar,Button,Avatar } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 import useStyles from './styles';
-import memoriesLogo from '../../images/memories-Logo.png';
-import memoriesText from '../../images/memories-Text.png';
+import midnightImage from '../../images/midnight.jpeg';
+import instaGram from '../../images/insta.png';
 import { LOGOUT } from '../../constants/actionTypes';
 
 const Navbar = () => {
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const dispatch = useDispatch();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     
     useEffect((user) => {
         const token = user?.token;
-
         if (token) {
             const decodedToken = decode(token);
             if (decodedToken.exp * 1000 < new Date().getTime()) {
@@ -30,30 +29,55 @@ const Navbar = () => {
 
     const logOut = () => {
         dispatch({type: LOGOUT});
-        history('/auth');
+        navigate('/auth');
         setUser(null);
+        window.location.reload();
     };
+
+    const signInPage = () => {
+        navigate('/auth');
+    }
 
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
             <div className={classes.brandContainer}>
-                <img className={classes.image} src={memoriesLogo} alt="memories" height="40"/>
-                <img className={classes.image} src={memoriesText} alt="memories" height="40"/>
+                <img className={classes.image} src={midnightImage} alt="memories" height="40"/>
+                <img className={classes.image} src={instaGram} alt="memories" height="40"/>
             </div>
             <Toolbar className={classes.toolbar}>
-                {user ? (
-                        <div className={classes.profile}>
-                            <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl}>
-                                {user.result.name.charAt(0)}
+                {(user?.result) && (
+                    <div className={classes.toolbarContainer}>
+                        <div className={classes.avatarText}>
+                            <Avatar className={classes.avatar} alt={user?.result?.name} src={user?.result?.imageUrl}>
+                                {user.result?.name.charAt(0)}
                             </Avatar>
                             <Typography className={classes.userName} variant="h6">
-                                {user.result.name}
+                                {user.result?.name}
                             </Typography>
+                        </div>
+                        <div className={classes.profile}>
                             <Button className={classes.logout} variant="contained" color="secondary" onClick={logOut}>Logout</Button>
                         </div>
-                    ): (
-                        <Button component={Link} to="/auth" variant="contained" color="primary">Sign in</Button>
-                    )}
+                    </div>
+                )}
+                { (user?.googleToken) && (
+                    <div className={classes.toolbarContainer}>
+                        <div className={classes.avatarText}>
+                            <Avatar className={classes.avatar} alt={user?.googleToken?.name} src={user?.googleToken?.picture}>
+                                {user.googleToken?.name.charAt(0)}
+                            </Avatar>
+                            <Typography className={classes.userName} variant="h6">
+                                {user?.googleToken?.name}
+                            </Typography>
+                        </div>
+                        <div className={classes.profile}>
+                            <Button className={classes.logout} variant="contained" color="secondary" onClick={logOut}>Logout</Button>
+                        </div>
+                    </div>
+                ) }
+                { !(user?.result || user?.googleToken) && (
+                    <Button onClick={signInPage} variant="contained" color="primary">Sign in</Button>
+                ) }
             </Toolbar>
         </AppBar>
     )
