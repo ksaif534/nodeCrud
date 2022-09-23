@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Card, CardActions, CardActionArea, CardContent, Button, Typography, CardMedia } from '@material-ui/core';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { Card, CardActions, CardActionArea, CardContent, Button, Typography, CardMedia } from '@mui/material';
+import ThumbUpOffAlt from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpOffAltOutlined from '@mui/icons-material/ThumbUpOffAltOutlined';
+import DeleteForeverOutlined from '@mui/icons-material/DeleteForeverOutlined';
+import MoreHorizOutlined from '@mui/icons-material/MoreHorizOutlined';
 import moment from 'moment';
 import useStyles from './styles';
 import { useDispatch } from 'react-redux';
@@ -14,26 +14,26 @@ const Post = ({post , setCurrentId}) => {
     // eslint-disable-next-line
     const classes = useStyles();
     const dispatch = useDispatch();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [likes,setLikes] = useState(post?.likes);
     const user = JSON.parse(localStorage.getItem('profile'));
     const userId = user?.result?.googleId || user?.result?._id || user?.googleToken?.sub;
     const hasLikedPost = post?.likes.find((like) => like === (userId));
 
     const openPost = () => {
-        return history(`/posts/${post._id}`);
+        return navigate(`/posts/${post._id}`);
     };
 
     const Likes = () => {
         if (likes?.length > 0) {
             return (hasLikedPost
             ? (
-                <> <ThumbUpAltIcon fontSize="small" /> &nbsp; {likes.length > 2 ? `You & ${likes.length - 1} Others Like this` : `${likes.length} People like this`} </>
+                <> <ThumbUpOffAlt fontSize="small" /> &nbsp; {likes.length > 2 ? `You & ${likes.length - 1} Others Like this` : `${likes.length} People like this`} </>
             ) : (
-                <> <ThumbUpAltOutlinedIcon fontSize="small" /> &nbsp; {likes.length} {likes.length === 1 ? 'Like' : 'Likes'} </>
+                <> <ThumbUpOffAltOutlined fontSize="small" /> &nbsp; {likes.length} {likes.length === 1 ? 'Like' : 'Likes'} </>
             ))
         }
-        return <> <ThumbUpAltOutlinedIcon fontSize="small" />&nbsp; Like </>;
+        return <> <ThumbUpOffAltOutlined fontSize="small" />&nbsp; Like </>;
     }
 
     const handleLike = async () => {
@@ -46,20 +46,20 @@ const Post = ({post , setCurrentId}) => {
     }
 
     return (
-        <Card className={classes.card} elevation={6}>
+        <Card className={classes.card} elevation={6} style={{ borderRadius: '20px' }}>
             <CardMedia className={classes.media} component='img' image={post?.selectedFile} title={post?.title} />
             <div className={classes.overlay}>
                 <Typography variant="h6">
-                    {post?.name}
+                    {post?.name || user?.googleToken?.name}
                 </Typography>
                 <Typography variant="body2">
                     {moment(post?.createdAt).fromNow()}
                 </Typography>
             </div>
             {(userId === post?.creator) && (
-                <div className={classes.overlay2}>
+                <div className={classes.overlay}>
                     <Button style={{color:'white'}} size="small" onClick={()=>setCurrentId(post._id)}>
-                        <MoreHorizIcon fontSize="medium" />
+                        <MoreHorizOutlined fontSize="medium" />
                     </Button>
                 </div>
             )}
@@ -91,7 +91,7 @@ const Post = ({post , setCurrentId}) => {
                 ) }
                 { (userId === post?.creator) && (
                     <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
-                        <DeleteIcon fontSize="small" />
+                        <DeleteForeverOutlined fontSize="small" />
                         Delete
                     </Button>
                 )}

@@ -22,3 +22,7 @@ export const deleteComment = (comment,id) => API.patch(`/posts/${id}/deleteComme
 
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
+
+export const getProfile = (id) => API.get(`/users/profile/${id}`);
+export const editProfile = (id) => API.get(`/users/profile/${id}/edit`);
+export const updateProfile = (formData,id) => API.patch(`/users/profile/${id}/update`, { formData });

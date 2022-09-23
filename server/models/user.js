@@ -4,7 +4,10 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true},
     password: { type: String, required: true},
-    id: { type: String }
+    id: { type: String },
+    profilepic: { type: Object, required: true },
+    userdetails: { type: String }
 });
 
-export default mongoose.model("User",userSchema);
+const User = mongoose.model("User",userSchema)
+export default User;

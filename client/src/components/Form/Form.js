@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
+import { TextField, Button, Typography, Paper } from "@mui/material";
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from "react-redux";
 import useStyles from './styles';
@@ -15,7 +15,7 @@ const Form = ({currentId, setCurrentId}) => {
     });
     const post = useSelector((state) => currentId ? state.posts.posts.find((p) => p._id === currentId) : null);
     const classes = useStyles();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ const Form = ({currentId, setCurrentId}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (currentId === null) {
-            dispatch(createPost({ ...postData, name: user?.result?.name },history));
+            dispatch(createPost({ ...postData, name: user?.result?.name },navigate));
         } else {
             console.log(currentId);
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));    
@@ -38,7 +38,7 @@ const Form = ({currentId, setCurrentId}) => {
             return (
                 <Paper className={classes.paper}>
                     <Typography variant="h6" align="center">
-                        Please Sign in to Create your own memories and like other's memories
+                        Please Sign in to Create your own Posts and like other's Posts
                     </Typography>
                 </Paper>
             )
@@ -49,7 +49,7 @@ const Form = ({currentId, setCurrentId}) => {
             return (
                 <Paper className={classes.paper}>
                     <Typography variant="h6" align="center">
-                        Please Sign in to Create your own memories and like other's memories
+                        Please Sign in to Create your own Posts and like other's Posts
                     </Typography>
                 </Paper>
             )
@@ -65,7 +65,7 @@ const Form = ({currentId, setCurrentId}) => {
         });
     }
     return (
-        <Paper className={classes.paper} elevation={6}>
+        <Paper className={classes.paper} elevation={6} style={{ borderRadius: '20px' }}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Creating' } a Post</Typography>
                 <TextField
@@ -89,7 +89,7 @@ const Form = ({currentId, setCurrentId}) => {
                 <div className={classes.fileInput}>
                     <FileBase type="file" multiple={false} onDone={({base64})=> setPostData({ ...postData, selectedFile: base64 })}
                     />
-                    <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>
+                    <Button className={classes.buttonSubmit} sx={{ mb: 2, mt: 2 }} variant="contained" color="primary" size="large" type="submit" fullWidth>
                         Submit
                     </Button>
                     <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>

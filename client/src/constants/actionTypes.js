@@ -12,3 +12,6 @@ export const UPDATE_COMMENT = 'UPDATE_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
+export const USERPROFILE = 'USERPROFILE';
+export const EDITPROFILE = 'EDITPROFILE';
+export const UPDATEPROFILE = 'UPDATEPROFILE';

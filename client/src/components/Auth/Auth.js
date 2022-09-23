@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
-import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
-// import { GoogleLogin } from 'react-google-login';
+import { Avatar, Button, Paper, Grid, Typography, Container } from '@mui/material';
 import { GoogleOAuthProvider,GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Icon from './Icon';
-import LockOutlinedIcon  from '@material-ui/icons/LockOutlined';
+import LockOutlined  from '@mui/icons-material/LockOutlined';
 import Input from './Input';
 import useStyles from './styles';
 import { signin, signup } from '../../actions/auth';
 import { AUTH } from '../../constants/actionTypes';
-import jwt_decode from 'jwt-decode'; 
+import jwt_decode from 'jwt-decode';
+import FileBase from 'react-file-base64'; 
 
-const initState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
+const initState = { firstName: '', lastName: '', email: '', password: '', profilepic: {}, userdetails: '' , confirmPassword: ''};
 
 const Auth = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignUp,setIsSignUp] = useState(false);
     const dispatch = useDispatch();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState(initState);
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(formData);
         if (isSignUp) {
-            dispatch(signup(formData, history));
+            dispatch(signup(formData, navigate));
         } else {
-            dispatch(signin(formData, history));
+            dispatch(signin(formData, navigate));
         }
     }
     const handleChange = (e) => {
@@ -43,7 +44,7 @@ const Auth = () => {
         localStorage.setItem('encodedProfile', res.credential);
         try {
             dispatch({type: AUTH, data: {googleToken} });
-            history('/auth');
+            navigate('/auth');
             window.location.reload();
         } catch (error) {
             console.error(error);
@@ -57,7 +58,7 @@ const Auth = () => {
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOutlined />
                 </Avatar>
                 <Typography variant="h5">
                     {isSignUp ? 'Sign Up' : 'Sign In'}
@@ -74,11 +75,21 @@ const Auth = () => {
                         }
                         <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
                         <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
+                        { isSignUp && (
+                            <div className={classes.imageStyle}>
+                                <FileBase type="file" multiple={false} onDone={(base64) => setFormData({ ...formData, profilepic: base64 })} />
+                            </div>
+                        ) }
+                        { isSignUp && (
+                            <Input name="userdetails" label="User Details" handleChange={handleChange} type="text" />
+                        ) }
                         { isSignUp && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" /> } 
                     </Grid>
+                    <br />
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         { isSignUp ? 'Sign Up' : 'Sign In'}
                     </Button>
+                    <br />
                     <GoogleOAuthProvider clientId="971085252524-mgcsnijlq5nivamlpb3f8flpdhcia7t4.apps.googleusercontent.com">
                         <GoogleLogin 
                             render={(renderProps) =>(
@@ -97,7 +108,8 @@ const Auth = () => {
                             onFailure={googleFailure}
                             cookiePolicy="single_host_origin"
                         />
-                    </GoogleOAuthProvider>   
+                    </GoogleOAuthProvider>
+                    <br />   
                     <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Button onClick={switchMode}>

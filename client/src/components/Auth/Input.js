@@ -1,9 +1,9 @@
 import React from 'react';
-import { TextField, Grid, InputAdornment, IconButton } from '@material-ui/core';
-import  Visibility  from '@material-ui/icons/Visibility';
-import  VisibilityOff  from '@material-ui/icons/VisibilityOff';
+import { TextField, Grid, InputAdornment, IconButton } from '@mui/material';
+import  Visibility  from '@mui/icons-material/Visibility';
+import  VisibilityOffOutlined  from '@mui/icons-material/VisibilityOffOutlined';
 
-const Input = ({ handleChange,handleShowPassword,type,autoFocus,label,name,half }) => {
+const Input = ({ handleChange,handleShowPassword,type,autoFocus,label,name,half,value }) => {
     return (
         <Grid item xs={12} sm={ half ? 6 : 12}>
             <TextField 
@@ -12,14 +12,15 @@ const Input = ({ handleChange,handleShowPassword,type,autoFocus,label,name,half 
                 variant="outlined"
                 required
                 fullWidth
+                value={value}
                 label={label} 
                 autoFocus={autoFocus}
                 type={type}
-                InputProps={name === 'password' ? {
+                InputProps={(name === 'password' || name === 'confirmPassword') ? {
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton onClick={handleShowPassword}>
-                                { type === 'password' ? <Visibility /> : <VisibilityOff /> }
+                                { type === 'password' ? <Visibility /> : <VisibilityOffOutlined /> }
                             </IconButton>
                         </InputAdornment>
                     ) ,

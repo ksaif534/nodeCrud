@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 
 export default makeStyles({
     media: {
@@ -16,7 +16,6 @@ export default makeStyles({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        borderRadius: '15px',
         height: '100%',
         position: 'relative',
     },
@@ -24,12 +23,6 @@ export default makeStyles({
         position: 'absolute',
         top: '20px',
         left: '20px',
-        color: 'white',
-    },
-    overlay2: {
-        position: 'absolute',
-        top: '20px',
-        right: '20px',
         color: 'white',
     },
     grid: {

@@ -38,6 +38,15 @@ const Navbar = () => {
         navigate('/auth');
     }
 
+    const getUserProfile = () => {
+        console.log('yes');
+        if (user?.result) { 
+            navigate(`users/profile/${user?.result?._id}`);   
+        }else {
+            navigate(`users/profile/${user?.googleToken?.sub}`); 
+        }
+    }
+
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
             <div className={classes.brandContainer}>
@@ -48,7 +57,7 @@ const Navbar = () => {
                 {(user?.result) && (
                     <div className={classes.toolbarContainer}>
                         <div className={classes.avatarText}>
-                            <Avatar className={classes.avatar} alt={user?.result?.name} src={user?.result?.imageUrl}>
+                            <Avatar className={classes.avatar} alt={user?.result?.name} src={user?.result?.imageUrl} onClick={getUserProfile}>
                                 {user.result?.name.charAt(0)}
                             </Avatar>
                             <Typography className={classes.userName} variant="h6">
@@ -63,7 +72,7 @@ const Navbar = () => {
                 { (user?.googleToken) && (
                     <div className={classes.toolbarContainer}>
                         <div className={classes.avatarText}>
-                            <Avatar className={classes.avatar} alt={user?.googleToken?.name} src={user?.googleToken?.picture}>
+                            <Avatar className={classes.avatar} alt={user?.googleToken?.name} src={user?.googleToken?.picture} onClick={getUserProfile}>
                                 {user.googleToken?.name.charAt(0)}
                             </Avatar>
                             <Typography className={classes.userName} variant="h6">

@@ -1,11 +1,11 @@
-import { Container, Grow, Grid, AppBar, Paper, TextField, Button, Typography  } from "@material-ui/core";
+import { Container, Grow, Grid, AppBar, Paper, TextField, Button, Typography, Chip  } from "@mui/material";
 import React, { useState } from 'react';
 import Posts from '../Posts/Posts';
 import { getPostsBySearch } from '../../actions/posts';
 import Form from '../Form/Form';
 import { useDispatch } from 'react-redux';
 import { useNavigate,useLocation } from "react-router-dom";
-import ChipInput from 'material-ui-chip-input';
+import ChipInput from '@jansedlon/material-ui-chip-input';
 import Pagination from '../Pagination';
 import useStyles from './styles';
 
@@ -17,7 +17,7 @@ const Home = () => {
     const [currentId, setCurrentId] = useState(null);
     const dispatch = useDispatch();
     const query = useQuery();
-    const history = useNavigate();
+    const navigate = useNavigate();
     const page = query.get('page') || 1;
     const searchQuery = query.get('searchQuery');
     const classes = useStyles();
@@ -41,7 +41,7 @@ const Home = () => {
         if (search.trim() || tags) {
             dispatch(getPostsBySearch({ search, tags: tags.join(',') }));    
         }else{
-            history('/');
+            navigate('/');
         }
     }
 
@@ -59,7 +59,7 @@ const Home = () => {
                             <TextField 
                             name="search" 
                             variant="outlined" 
-                            label="search Memories"
+                            label="search Posts"
                             onKeyPress={handleKeyPress}
                             fullWidth
                             value={search}
@@ -81,7 +81,7 @@ const Home = () => {
                         ) : (
                             <Paper className={classes.paper}>
                                 <Typography variant="h6" align="center">
-                                    Please Sign in to Create your own memories and like other's memories
+                                    Please Sign in to Create your own Posts and like other's Posts
                                 </Typography>
                             </Paper>
                         ) }
