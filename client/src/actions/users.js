@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { USERPROFILE, EDITPROFILE, UPDATEPROFILE } from '../constants/actionTypes';
+import { USERPROFILE, EDITPROFILE, UPDATEPROFILE, DELETEPROFILE } from '../constants/actionTypes';
 
 export const getProfile = (id) => async (dispatch) => {
     try {
@@ -25,6 +25,14 @@ export const updateProfile = (formData,id) => async (dispatch) => {
     try {
         const { data } = await api.updateProfile(formData,id);
         dispatch({ type: UPDATEPROFILE, payload: data});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteProfile = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.deleteProfile(id);
     } catch (error) {
         console.log(error);
     }

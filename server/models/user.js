@@ -6,8 +6,8 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true},
     id: { type: String },
     profilepic: { type: Object, required: true },
-    userdetails: { type: String }
+    userdetails: { type: String, required: true }
 });
 
-const User = mongoose.model("User",userSchema)
+const User = mongoose.model('User',userSchema);
 export default User;

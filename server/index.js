@@ -17,7 +17,7 @@ app.use(morgan('common'));
 app.use('/posts',postRoutes);
 app.use('/users',userRoutes);
 
-mongoose.connect(process.env.LOCAL_CONNECTION,{ useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.LOCAL_CONNECTION)
     .then(() => morgan('common'))
     .catch((error) => console.log(error.message));
 

@@ -15,3 +15,4 @@ export const LOGOUT = 'LOGOUT';
 export const USERPROFILE = 'USERPROFILE';
 export const EDITPROFILE = 'EDITPROFILE';
 export const UPDATEPROFILE = 'UPDATEPROFILE';
+export const DELETEPROFILE = 'DELETEPROFILE';

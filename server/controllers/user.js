@@ -53,7 +53,7 @@ export const getProfile = async (req, res) => {
 
 export const editProfile = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id }  = req.params;
         const user = await User.findById(id);
         res.status(200).json({ user });
     } catch (error) {
@@ -66,10 +66,23 @@ export const updateProfile = async (req, res) => {
         const { id: _id } = req.params;
         const user = req.body;
         if (mongoose.Types.ObjectId.isValid(_id)) {
-            const updatedUser = await User.findByIdAndUpdate(_id, { ...user, _id }, { new: true });
+            const updatedUser = await User.findByIdAndUpdate(_id, { ...user?.formData, _id }, { new: true });
             res.json(updatedUser);
         }else{
             res.status(404).send(`No User with that ID`);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteProfile = async (req, res) => {
+    try {
+        const { id: _id } = req.params;
+        if (mongoose.Types.ObjectId.isValid(_id)) {
+            const deletedUserResult = await User.findByIdAndRemove(_id);
+        } else {
+            
         }
     } catch (error) {
         console.log(error);

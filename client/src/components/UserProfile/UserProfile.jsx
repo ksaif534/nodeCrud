@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getProfile } from '../../actions/users';
+import { getProfile, deleteProfile } from '../../actions/users';
 import { Card, CardContent, CardMedia, Typography, Grid, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MoreHorizOutlined from '@mui/icons-material/MoreHorizOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 import useStyles from './styles';
 
 const UserProfile   = () => {
@@ -26,11 +27,11 @@ const UserProfile   = () => {
   }
 
   const handleUpdateOption = () => {
-        if (user?.result) {
-            return navigate(`/users/profile/${user?.result?._id}/edit`);    
-        }else{
-            return navigate(`/users/profile/${user?.googleToken?.sub}/edit`);
-        }
+    return navigate(`/users/profile/${user?._id}/edit`);   
+  }
+
+  const handleDeleteOptions = async () => {
+    setUser(await dispatch(deleteProfile(user?._id)).then(response => console.log(response))); 
   }
     
   return (
@@ -65,7 +66,7 @@ const UserProfile   = () => {
             </Grid>
             <Grid item xs={12} sm={12} md={8} lg={8}>
                 <Card elevation={6} className={classes.card} style={{ borderRadius: '20px' }}>
-                    <CardMedia image={user.profilepic?.base64} component='img' className={classes.cardMedia} />
+                    <CardMedia image={user?.profilepic?.base64} component='img' className={classes.cardMedia} />
                     <div className={classes.overlay}>
                         <Typography variant="h3">
                             { user?.name }
@@ -77,9 +78,18 @@ const UserProfile   = () => {
                         </Button>
                     </div>
                     <CardContent>
-                        <Typography variant="h5">
-                            { user?.userdetails }
-                        </Typography>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={10} md={10} lg={10}>
+                                <Typography variant="h5">
+                                    { user?.userdetails }
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={2} md={2} lg={2}>
+                                <Button size="small">
+                                    <DeleteIcon fontSize="medium" onClick={handleDeleteOptions} />
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </CardContent>
                 </Card>
             </Grid>

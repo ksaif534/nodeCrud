@@ -26,3 +26,4 @@ export const signUp = (formData) => API.post('/users/signup', formData);
 export const getProfile = (id) => API.get(`/users/profile/${id}`);
 export const editProfile = (id) => API.get(`/users/profile/${id}/edit`);
 export const updateProfile = (formData,id) => API.patch(`/users/profile/${id}/update`, { formData });
+export const deleteProfile = (id) => API.delete(`/users/profile/${id}/delete`);
