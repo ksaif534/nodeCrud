@@ -39,7 +39,6 @@ const Navbar = () => {
     }
 
     const getUserProfile = () => {
-        console.log('yes');
         if (user?.result) { 
             navigate(`users/profile/${user?.result?._id}`);   
         }else {
